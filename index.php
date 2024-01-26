@@ -1,27 +1,52 @@
 <?php
-include('simple_html_dom.php');
 
-// Conectar-se ao banco de dados
-$conn = new mysqli("localhost", "usuario", "senha", "banco_de_dados");
-if ($conn->connect_error) {
-    die("Erro na conexÃ£o com o banco de dados: " . $conn->connect_error);
+require 'vendor/autoload.php';
+use GuzzleHttp\Client;
+
+$client = new Client();
+
+// URL da loja
+$url = 'https://www.bulk.com/pt/creatine-monohydrate.html';
+
+// Simular a requisição GET para obter o conteúdo da página
+$response = $client->get($url);
+$html = (string) $response->getBody();
+
+// Encontrar o conteúdo JSON dentro da tag script
+$pattern = '/<script type="application\/ld\+json">(.*?)<\/script>/s';
+preg_match($pattern, $html, $matches);
+
+if (isset($matches[1])) {
+    // Decodificar o JSON
+    $productData = json_decode($matches[1], true);
+
+    // Verificar se a decodificação foi bem-sucedida e se as ofertas estão presentes
+    if ($productData && isset($productData['offers'])) {
+        // Inicializar a variável do maior preço
+        $maiorPreco = null;
+
+        // Iterar sobre as ofertas para encontrar o maior preço
+        foreach ($productData['offers'] as $offer) {
+            if (isset($offer['price'])) {
+                $price = $offer['price'];
+
+                // Atualizar o maior preço se necessário
+                if ($maiorPreco === null || $price > $maiorPreco) {
+                    $maiorPreco = $price;
+                }
+            }
+        }
+
+        // Imprimir o maior preço se encontrado
+        if ($maiorPreco !== null) {
+            echo $maiorPreco . '€' . PHP_EOL;
+        } else {
+            echo 'Não foi possível encontrar preços.';
+        }
+    } else {
+        echo 'Não foi possível encontrar as ofertas.';
+    }
+} else {
+    echo 'Não foi possível encontrar o script JSON.';
 }
-
-// Fazer o web scraping
-$url = "https://www.prozis.com/pt/pt/prozis/creatina-mono-hidratada-700-g";
-$html = file_get_html($url);
-
-// Extrair dados
-$precoElement = $html->find('p.final-price', 0);
-
-// Apresentar os valores no HTML
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Web Scraping Exemplo</title>
-</head>
-<body>
-    <p itemprop="price" class="final-price"> <?php echo $preco; ?> </p>
-</body>
-</html>
