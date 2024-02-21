@@ -1,0 +1,39 @@
+{
+    "Impact Whey Concentrate": {
+        "10797927": 0.25,
+        "13442766": 0.5,
+        "10531012": 1,
+        "10530986": 2.5,
+        "10530960": 5
+    },
+
+    "Impact Whey Isolate": {        
+        "13442783": 0.5,
+        "10530930": 1,
+        "10530924": 2.5
+    },
+
+    "Proteína Whey Hidrolisada": {
+        "10529807": 1,
+        "10529806": 2.5
+    },
+
+    "Creatina Monohidratada": {
+        "15010401" : 0.1,
+        "10530053" : 0.25,
+        "10530054" : 0.5
+    },
+
+    "Proteína de Ervilha Isoladas": {
+        "10530136" : 1
+    },
+
+    "Proteína de Arroz Integral Isolada": {
+        "10530782": 1
+    },
+
+    "Proteína de Soja Isolada": {
+        "12341728" : 0.5,
+        "12341735" : 1
+    }
+}
